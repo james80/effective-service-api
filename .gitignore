@@ -1,0 +1,18 @@
+# Maven #
+target
+
+# Web #
+bower_components
+
+# Java #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# IDEA #
+.idea
+*.iml
+
