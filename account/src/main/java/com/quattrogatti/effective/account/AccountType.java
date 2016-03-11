@@ -1,4 +1,4 @@
-package com.quattrogatti.effective;
+package com.quattrogatti.effective.account;
 
 public enum AccountType {
     INCOME,

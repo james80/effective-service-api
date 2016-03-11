@@ -1,4 +1,4 @@
-package com.quattrogatti.effective;
+package com.quattrogatti.effective.account;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

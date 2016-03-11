@@ -1,12 +1,12 @@
-package com.quattrogatti.effective;
+package com.quattrogatti.effective.account;
 
 import com.quattrogatti.effective.common.RegisteredController;
 import org.rapidoid.http.Req;
 
 import java.util.Optional;
 
-import static com.quattrogatti.effective.AccountController.AccountParam.ID;
-import static com.quattrogatti.effective.AccountController.AccountUrl.*;
+import static com.quattrogatti.effective.account.AccountController.AccountParam.ID;
+import static com.quattrogatti.effective.account.AccountController.AccountUrl.*;
 import static org.rapidoid.http.fast.HttpStatus.NOT_FOUND;
 import static org.rapidoid.http.fast.On.*;
 
