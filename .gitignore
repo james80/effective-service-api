@@ -1,9 +1,6 @@
 # Maven #
 target
 
-# Web #
-bower_components
-
 # Java #
 *.class
 
