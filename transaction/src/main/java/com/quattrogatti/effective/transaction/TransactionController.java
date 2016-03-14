@@ -2,7 +2,6 @@ package com.quattrogatti.effective.transaction;
 
 import com.quattrogatti.effective.common.RegisteredController;
 import org.rapidoid.http.Req;
-import org.rapidoid.http.Resp;
 
 import java.util.Optional;
 
@@ -21,11 +20,11 @@ public final class TransactionController implements RegisteredController {
 
     @Override
     public void register() {
-        get(ALL).json(req -> getTransactions(req));
-        get(BY_ID).json(req -> getTransaction(req));
-        put(BY_ID).json(req -> putTransaction(req));
-        delete(BY_ID).json(req -> deleteTransaction(req));
-        post(CREATE).json(req -> postTransaction(req));
+        get(ALL).json(this::getTransactions);
+        get(BY_ID).json(this::getTransaction);
+        put(BY_ID).json(this::putTransaction);
+        delete(BY_ID).json(this::deleteTransaction);
+        post(CREATE).json(this::postTransaction);
     }
 
     private Transaction mapTransaction(byte[] requestBody) {
@@ -34,10 +33,10 @@ public final class TransactionController implements RegisteredController {
 
     private Iterable<Transaction> getTransactions(Req request) {
         // TODO this should be a POJO
-        String debitId = request.param(DEBIT_ID);
-        String creditId = request.param(CREDIT_ID);
-        String fromDate = request.param(FROM_DATE);
-        String toDate = request.param(TO_DATE);
+        String debitId = request.param(DEBIT_ID, null);
+        String creditId = request.param(CREDIT_ID, null);
+        String fromDate = request.param(FROM_DATE, null);
+        String toDate = request.param(TO_DATE, null);
         TransactionService.TransactionFinder finder = transactionService.find();
         return finder.execute();
     }

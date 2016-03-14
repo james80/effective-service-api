@@ -44,8 +44,8 @@ public final class Amount {
         return new Amount(round(multiplied));
     }
 
-    public Amount divide(Amount divisor) {
-        double divided = ((double) this.amount / (double) divisor.amount);
+    public Amount divide(Amount dividing) {
+        double divided = ((double) this.amount / (double) dividing.amount);
         return new Amount(round(divided));
     }
 
