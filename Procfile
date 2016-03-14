@@ -1,1 +1,1 @@
-web: java -jar -DWEB_PORT=$PORT transaction/target/transaction-*.jar
+web: java $JAVA_OPTS -DWEB_PORT=$PORT -jar transaction/target/transaction.jar
