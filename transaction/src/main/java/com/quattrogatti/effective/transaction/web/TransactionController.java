@@ -1,12 +1,18 @@
-package com.quattrogatti.effective.transaction;
+package com.quattrogatti.effective.transaction.web;
 
 import com.quattrogatti.effective.common.RegisteredController;
+import com.quattrogatti.effective.transaction.TransactionService;
+import com.quattrogatti.effective.transaction.TransactionService.TransactionFinder;
+import com.quattrogatti.effective.transaction.domain.Transaction;
 import org.rapidoid.http.Req;
 
 import java.util.Optional;
 
-import static com.quattrogatti.effective.transaction.TransactionController.TransactionParam.*;
-import static com.quattrogatti.effective.transaction.TransactionController.TransactionUrl.*;
+import static com.quattrogatti.effective.transaction.web.TransactionController.TransactionParam.*;
+import static com.quattrogatti.effective.transaction.web.TransactionController.TransactionUrl.*;
+import static java.time.LocalDate.parse;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.util.Optional.ofNullable;
 import static org.rapidoid.http.fast.HttpStatus.NOT_FOUND;
 import static org.rapidoid.http.fast.On.*;
 
@@ -32,24 +38,26 @@ public final class TransactionController implements RegisteredController {
     }
 
     private Iterable<Transaction> getTransactions(Req request) {
-        // TODO this should be a POJO
-        String debitId = request.param(DEBIT_ID, null);
-        String creditId = request.param(CREDIT_ID, null);
-        String fromDate = request.param(FROM_DATE, null);
-        String toDate = request.param(TO_DATE, null);
-        TransactionService.TransactionFinder finder = transactionService.find();
+        TransactionFinder finder = transactionService.fetchAll();
+        ofNullable(request.param(DEBIT_ID, null)).ifPresent(finder::withDebitAccount);
+        ofNullable(request.param(CREDIT_ID, null)).ifPresent(finder::withCreditAccount);
+        ofNullable(request.param(FROM_DATE, null))
+                .map(date -> parse(date, ISO_LOCAL_DATE))
+                .ifPresent(finder::withFromDate);
+        ofNullable(request.param(TO_DATE, null))
+                .map(date -> parse(date, ISO_LOCAL_DATE))
+                .ifPresent(finder::withFromDate);
         return finder.execute();
     }
 
     private Transaction getTransaction(Req request) {
         String id = request.param(ID);
-        Optional<Transaction> fetched = transactionService.find().withId(id);
-        return fetched.get();
+        return transactionService.fetchOne(id);
     }
 
     private Transaction putTransaction(Req request) {
         String id = request.param(ID);
-        Optional<Transaction> fetched = transactionService.find().withId(id);
+        Optional<Transaction> fetched = ofNullable(transactionService.fetchOne(id));
         if (fetched.isPresent()) {
             Transaction updated = Transaction.from(fetched.get()).copy(mapTransaction(request.body())).build();
             return transactionService.with(updated).save();
@@ -59,7 +67,7 @@ public final class TransactionController implements RegisteredController {
 
     private Transaction deleteTransaction(Req request) {
         String id = request.param(ID);
-        Optional<Transaction> fetched = transactionService.find().withId(id);
+        Optional<Transaction> fetched = ofNullable(transactionService.fetchOne(id));
         if (fetched.isPresent()) {
             transactionService.with(fetched.get()).delete();
         }
@@ -73,7 +81,7 @@ public final class TransactionController implements RegisteredController {
 
     protected static final class TransactionUrl {
         protected static final String ALL = "/transactions";
-        protected static final String BY_ID = "/transaction";
+        protected static final String BY_ID = "/transaction/{id}";
         protected static final String CREATE = "/transaction";
 
         private TransactionUrl() {

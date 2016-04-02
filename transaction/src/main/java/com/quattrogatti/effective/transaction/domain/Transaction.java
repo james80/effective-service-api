@@ -1,4 +1,4 @@
-package com.quattrogatti.effective.transaction;
+package com.quattrogatti.effective.transaction.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

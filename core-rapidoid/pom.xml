@@ -12,7 +12,7 @@
     <artifactId>core-rapidoid</artifactId>
 
     <properties>
-        <rapidoid.verion>5.0.8</rapidoid.verion>
+        <rapidoid.verion>5.0.12</rapidoid.verion>
     </properties>
 
     <dependencies>

@@ -1,4 +1,6 @@
-package com.quattrogatti.effective.transaction;
+package com.quattrogatti.effective.transaction.data;
+
+import com.quattrogatti.effective.transaction.domain.Transaction;
 
 import java.util.Set;
 
